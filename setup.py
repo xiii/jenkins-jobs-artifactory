@@ -11,7 +11,8 @@ setup(
     install_requires=[],
     entry_points={
         'jenkins_jobs.wrappers': [
-            'artifactory = jenkins_jobs_artifactory.artifactory:artifactory_wrapper'],
+            'artifactory = jenkins_jobs_artifactory.artifactory:artifactory_wrapper']
+    },
     packages=['jenkins_jobs_artifactory'],
     classifiers=[
         'Environment :: Console',
