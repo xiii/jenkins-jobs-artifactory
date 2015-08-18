@@ -65,7 +65,8 @@ def artifactory_publisher(parser, xml_parent, data):
                         artifactory-repository-key: "repo-name"
                         artifactory-snapshot-repository-key: "repo-name"
                         artifactory-url: "URL"
-                        artifactory-deploy-pattern: "*.rpm"
+                        artifactory-deploy-artifacts: true
+                        artifactory-include-artifacts: "*.rpm"
                         artifactory-deploy-buildinfo: true
                         artifactory-include-envvars: true
                         artifactory-exclude-patterns: "*password*,*secret*"
@@ -88,13 +89,18 @@ def artifactory_publisher(parser, xml_parent, data):
                                             ('artifactory-staging','stagingPlugin')):
           XML.SubElement(details, attr).text = data.get(opt, '')
 
-        for opt, attr in (('artifactory-deploy-pattern', 'deployPattern'),
-                                            ('artifactory-resolve-pattern','resolvePattern'),
+        for opt, attr in (('artifactory-resolve-pattern','resolvePattern'),
                                             ('artifactory-matrix-params','matrixParams'),
                                             ('artifactory-deploy-buildinfo','deployBuildInfo'),
+                                            ('artifactory-deploy-artifacts','deployArtifacts'),
                                             ('artifactory-include-envvars', 'includeEnvVars')):
           XML.SubElement(notifier, attr).text = data.get(opt, '')
 
+        artifactspatterns = XML.SubElement(notifier, 'artifactDeploymentPatterns')
+
+        for opt, attr in (('artifactory-include-artifacts', 'includePatterns'),
+                                            ('artifactory-exclude-artifacts', 'excludePatterns')):
+          XML.SubElement(artifactspatterns, attr).text = data.get(opt, '')
 
         envpatterns = XML.SubElement(notifier, 'envVarsPatterns')
 
