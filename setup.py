@@ -3,15 +3,15 @@ from setuptools import setup
 setup(
     name='jenkins-jobs-artifactory',
     version='0.1',
-    description='Jenkins Job Builder Artifactory wrapper',
+    description='Jenkins Job Builder Artifactory wrapper/publisher',
     url='https://github.com/xiii/jenkins-jobs-artifactory',
     author='Efstathios Xagoraris',
     author_email='efstathios.xagoraris@itv.com',
     license='MIT license',
     install_requires=[],
     entry_points={
-        'jenkins_jobs.wrappers': [
-            'artifactory = jenkins_jobs_artifactory.artifactory:artifactory_wrapper']
+        'jenkins_jobs.wrappers': [ 'artifactory = jenkins_jobs_artifactory.artifactory:artifactory_wrapper'],
+        'jenkins_jobs.publishers': [ 'artifactory = jenkins_jobs_artifactory.artifactory:artifactory_publisher']
     },
     packages=['jenkins_jobs_artifactory'],
     classifiers=[
