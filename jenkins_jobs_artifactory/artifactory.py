@@ -127,4 +127,4 @@ def artifactory_publisher(parser, xml_parent, data):
 
         for opt, attr in (('artifactory-username', 'username'),
                           ('artifactory-password', 'password')):
-            XML.SubElement(notifier, attr).text = data.get(opt, '')
+            XML.SubElement(deployer_overrides, attr).text = data.get(opt, '')
