@@ -19,9 +19,11 @@ def artifactory_wrapper(parser, xml_parent, data):
                         artifactory-discard-oldbuilds: false
                         artifactory-discard-buildartifacts: true
                         artifactory-multiconf: false
+                        artifactory-username: "username"
+                        artifactory-password: "password"
         """
         if data is None:
-          data = dict()
+            data = dict()
 
         notifier = XML.SubElement(xml_parent,'org.jfrog.hudson.generic.ArtifactoryGenericConfigurator')
         notifier.set('plugin','artifactory@2.2.7')
@@ -29,30 +31,40 @@ def artifactory_wrapper(parser, xml_parent, data):
         details = XML.SubElement(notifier, 'details')
 
         for opt, attr in (('artifactory-name', 'artifactoryName'),
-                                            ('artifactory-repository-key', 'repositoryKey'),
-                                            ('artifactory-snapshot-repository-key', 'snapshotsRepositoryKey'),
-                                            ('artifactory-url', 'artifactoryUrl'),
-                                            ('artifactory-staging','stagingPlugin')):
-          XML.SubElement(details, attr).text = data.get(opt, '')
+                          ('artifactory-repository-key', 'repositoryKey'),
+                          ('artifactory-snapshot-repository-key', 'snapshotsRepositoryKey'),
+                          ('artifactory-url', 'artifactoryUrl'),
+                          ('artifactory-staging','stagingPlugin')):
+            XML.SubElement(details, attr).text = data.get(opt, '')
 
         for opt, attr in (('artifactory-deploy-pattern', 'deployPattern'),
-                                            ('artifactory-resolve-pattern','resolvePattern'),
-                                            ('artifactory-matrix-params','matrixParams'),
-                                            ('artifactory-deploy-buildinfo','deployBuildInfo'),
-                                            ('artifactory-include-envvars', 'includeEnvVars')):
-          XML.SubElement(notifier, attr).text = data.get(opt, '')
-
+                          ('artifactory-resolve-pattern','resolvePattern'),
+                          ('artifactory-matrix-params','matrixParams'),
+                          ('artifactory-deploy-buildinfo','deployBuildInfo'),
+                          ('artifactory-include-envvars', 'includeEnvVars')):
+            XML.SubElement(notifier, attr).text = data.get(opt, '')
 
         envpatterns = XML.SubElement(notifier, 'envVarsPatterns')
 
         for opt, attr in (('artifactory-include-patterns', 'includePatterns'),
-                                            ('artifactory-exclude-patterns', 'excludePatterns')):
-          XML.SubElement(envpatterns, attr).text = data.get(opt, '')
+                          ('artifactory-exclude-patterns', 'excludePatterns')):
+            XML.SubElement(envpatterns, attr).text = data.get(opt, '')
 
         for opt, attr in (('artifactory-discard-oldbuilds', 'discardOldBuilds'),
-                                            ('artifactory-discard-buildartifacts', 'discardBuildArtifacts'),
-                                            ('artifactory-multiconf', 'multiConfProject')):
-          XML.SubElement(notifier, attr).text = data.get(opt, '')
+                          ('artifactory-discard-buildartifacts', 'discardBuildArtifacts'),
+                          ('artifactory-multiconf', 'multiConfProject')):
+            XML.SubElement(notifier, attr).text = data.get(opt, '')
+
+        artifactory_username = data.get('artifactory-username', '')
+        artifactory_password = data.get('artifactory-password', '')
+
+        if artifactory_username and artifactory_password:
+
+            deployer_overrides = XML.SubElement(notifier, 'overridingDeployerCredentials')
+
+            for opt, attr in (('artifactory-username', 'username'),
+                              ('artifactory-password', 'password')):
+                XML.SubElement(deployer_overrides, attr).text = data.get(opt, '')
 
 def artifactory_publisher(parser, xml_parent, data):
         """yaml: artifactory
@@ -73,9 +85,11 @@ def artifactory_publisher(parser, xml_parent, data):
                         artifactory-discard-oldbuilds: false
                         artifactory-discard-buildartifacts: true
                         artifactory-multiconf: false
+                        artifactory-username: "username"
+                        artifactory-password: "password"
         """
         if data is None:
-          data = dict()
+            data = dict()
 
         notifier = XML.SubElement(xml_parent,'org.jfrog.hudson.ArtifactoryRedeployPublisher')
         notifier.set('plugin','artifactory@2.2.7')
@@ -83,32 +97,43 @@ def artifactory_publisher(parser, xml_parent, data):
         details = XML.SubElement(notifier, 'details')
 
         for opt, attr in (('artifactory-name', 'artifactoryName'),
-                                            ('artifactory-repository-key', 'repositoryKey'),
-                                            ('artifactory-snapshot-repository-key', 'snapshotsRepositoryKey'),
-                                            ('artifactory-url', 'artifactoryUrl'),
-                                            ('artifactory-staging','stagingPlugin')):
-          XML.SubElement(details, attr).text = data.get(opt, '')
+                          ('artifactory-repository-key', 'repositoryKey'),
+                          ('artifactory-snapshot-repository-key', 'snapshotsRepositoryKey'),
+                          ('artifactory-url', 'artifactoryUrl'),
+                          ('artifactory-staging','stagingPlugin')):
+            XML.SubElement(details, attr).text = data.get(opt, '')
 
         for opt, attr in (('artifactory-resolve-pattern','resolvePattern'),
-                                            ('artifactory-matrix-params','matrixParams'),
-                                            ('artifactory-deploy-buildinfo','deployBuildInfo'),
-                                            ('artifactory-deploy-artifacts','deployArtifacts'),
-                                            ('artifactory-include-envvars', 'includeEnvVars')):
-          XML.SubElement(notifier, attr).text = data.get(opt, '')
+                          ('artifactory-matrix-params','matrixParams'),
+                          ('artifactory-deploy-buildinfo','deployBuildInfo'),
+                          ('artifactory-deploy-artifacts','deployArtifacts'),
+                          ('artifactory-include-envvars', 'includeEnvVars')):
+            XML.SubElement(notifier, attr).text = data.get(opt, '')
 
         artifactspatterns = XML.SubElement(notifier, 'artifactDeploymentPatterns')
 
         for opt, attr in (('artifactory-include-artifacts', 'includePatterns'),
-                                            ('artifactory-exclude-artifacts', 'excludePatterns')):
-          XML.SubElement(artifactspatterns, attr).text = data.get(opt, '')
+                          ('artifactory-exclude-artifacts', 'excludePatterns')):
+            XML.SubElement(artifactspatterns, attr).text = data.get(opt, '')
 
         envpatterns = XML.SubElement(notifier, 'envVarsPatterns')
 
         for opt, attr in (('artifactory-include-patterns', 'includePatterns'),
-                                            ('artifactory-exclude-patterns', 'excludePatterns')):
-          XML.SubElement(envpatterns, attr).text = data.get(opt, '')
+                          ('artifactory-exclude-patterns', 'excludePatterns')):
+            XML.SubElement(envpatterns, attr).text = data.get(opt, '')
 
         for opt, attr in (('artifactory-discard-oldbuilds', 'discardOldBuilds'),
-                                            ('artifactory-discard-buildartifacts', 'discardBuildArtifacts'),
-                                            ('artifactory-multiconf', 'multiConfProject')):
-          XML.SubElement(notifier, attr).text = data.get(opt, '')
+                          ('artifactory-discard-buildartifacts', 'discardBuildArtifacts'),
+                          ('artifactory-multiconf', 'multiConfProject')):
+            XML.SubElement(notifier, attr).text = data.get(opt, '')
+
+        artifactory_username = data.get('artifactory-username', '')
+        artifactory_password = data.get('artifactory-password', '')
+
+        if artifactory_username and artifactory_password:
+
+            deployer_overrides = XML.SubElement(notifier, 'overridingDeployerCredentials')
+
+            for opt, attr in (('artifactory-username', 'username'),
+                              ('artifactory-password', 'password')):
+                XML.SubElement(deployer_overrides, attr).text = data.get(opt, '')
