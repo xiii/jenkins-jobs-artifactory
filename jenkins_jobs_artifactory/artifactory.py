@@ -41,7 +41,6 @@ def artifactory_wrapper(parser, xml_parent, data):
                           ('artifactory-resolve-pattern','resolvePattern'),
                           ('artifactory-matrix-params','matrixParams'),
                           ('artifactory-deploy-buildinfo','deployBuildInfo'),
-                          ('artifactory-deploy-buildinfo','deployBuildInfo'),
                           ('artifactory-include-envvars', 'includeEnvVars')):
             XML.SubElement(notifier, attr).text = data.get(opt, '')
 
