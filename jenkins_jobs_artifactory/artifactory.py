@@ -127,8 +127,13 @@ def artifactory_publisher(parser, xml_parent, data):
                           ('artifactory-multiconf', 'multiConfProject')):
             XML.SubElement(notifier, attr).text = data.get(opt, '')
 
-        deployer_overrides = XML.SubElement(notifier, 'overridingDeployerCredentials')
+        artifactory_username = data.get('artifactory-username', '')
+        artifactory_password = data.get('artifactory-password', '')
 
-        for opt, attr in (('artifactory-username', 'username'),
-                          ('artifactory-password', 'password')):
-            XML.SubElement(deployer_overrides, attr).text = data.get(opt, '')
+        if artifactory_username and artifactory_password:
+
+            deployer_overrides = XML.SubElement(notifier, 'overridingDeployerCredentials')
+
+            for opt, attr in (('artifactory-username', 'username'),
+                              ('artifactory-password', 'password')):
+                XML.SubElement(deployer_overrides, attr).text = data.get(opt, '')
